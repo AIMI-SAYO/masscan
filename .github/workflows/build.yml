@@ -1,0 +1,23 @@
+name: Build Masscan Windows EXE
+
+on:
+workflow_dispatch: # Allows you to trigger the build manually
+
+jobs:
+build:
+runs-on: windows-latest
+steps:
+  - name: Clone Repository
+    uses: actions/checkout@v4
+
+  - name: Setup MSBuild
+    uses: microsoft/setup-msbuild@v2
+
+  - name: Build Masscan
+    run: msbuild vs10/masscan.sln /p:Configuration=Release /p:Platform=x64
+
+  - name: Upload EXE
+    uses: actions/upload-artifact@v4
+    with:
+      name: masscan-windows-exe
+      path: "**\\masscan.exe"
